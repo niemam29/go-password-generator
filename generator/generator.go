@@ -27,7 +27,10 @@ func GeneratePass(securityLevel int, passLength int) (string, error) {
 	}
 
 	var generatedSeed [8]byte
-	crypto_rand.Read(generatedSeed[:])
+	_, err := crypto_rand.Read(generatedSeed[:])
+	if err != nil {
+		return "", err
+	}
 	rand.Seed(int64(binary.LittleEndian.Uint64(generatedSeed[:])))
 
 	specialChar := "#?!@$%^&*-"
